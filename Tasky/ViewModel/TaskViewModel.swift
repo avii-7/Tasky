@@ -13,6 +13,16 @@ class TaskViewModel : ObservableObject {
     
     @Published var tasks = [TaskItem]()
     
+    let pickerDateRange: ClosedRange<Date> = {
+        let calendar = Calendar.current
+
+        let requiredComponents: Set<Calendar.Component> = [.day, .month, .year, .hour, .minute]
+        let startComponents = calendar.dateComponents(requiredComponents, from: Date())
+        let endComponents = calendar.dateComponents(requiredComponents, from: .distantFuture)
+        
+        return calendar.date(from:startComponents)!...calendar.date(from:endComponents)!
+    }()
+    
     func showTasks(completed: Bool) {
         tasks = tempTasks.filter({ $0.isCompleted == completed })
     }

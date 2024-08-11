@@ -17,6 +17,8 @@ struct TaskDetailView: View {
     
     @Binding var refreshList: Bool
     
+    @State private var showDeleteAlert = false
+    
     var body: some View {
         
         NavigationStack {
@@ -34,18 +36,14 @@ struct TaskDetailView: View {
                 }
                 
                 Section {
-                    DatePicker("Task date", selection: $taskItem.finishedDate)
+                    DatePicker("Task date", selection: $taskItem.finishedDate, in: viewModel.pickerDateRange)
                 } header: {
                     Text("Date/time")
                 }
                 
                 Section {
                     Button("Delete", role: .destructive) {
-                        if viewModel.deleteTask(taskItem) {
-                            debugPrint("Task deletion Success")
-                            refreshList.toggle()
-                        }
-                        showTaskDetailView = false
+                        showDeleteAlert = true
                     }
                     .frame(maxWidth: .infinity)
                 }
@@ -65,8 +63,21 @@ struct TaskDetailView: View {
                             refreshList.toggle()
                         }
                         showTaskDetailView = false
-                    }
+                    }.disabled(taskItem.name.isEmpty)
                 }
+            }
+            .alert("Delete task", isPresented: $showDeleteAlert) {
+                Button("No", role: .cancel) { }
+                
+                Button("Yes", role: .destructive) {
+                    if viewModel.deleteTask(taskItem) {
+                        refreshList.toggle()
+                    }
+                    showTaskDetailView = false
+                }
+            }
+            message: {
+                Text("Would you like to delete the task ?")
             }
         }
     }

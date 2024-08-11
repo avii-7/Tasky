@@ -23,6 +23,8 @@ struct AddTaskView: View {
     
     @Binding var refreshList: Bool
     
+    @State private var showDiscardAlert = false
+    
     var body: some View {
         NavigationStack {
             List {
@@ -37,26 +39,22 @@ struct AddTaskView: View {
                 }
                 
                 Section {
-                    DatePicker("Task date", selection: $taskItem.finishedDate)
+                    DatePicker("Task date", selection: $taskItem.finishedDate, in: viewModel.pickerDateRange)
                 } header: {
                     Text("Task date/time")
-                }
-                
-                Section {
-                    Button("Delete", role: .destructive) {
-                        if viewModel.deleteTask(taskItem) {
-                            print("Deletion Success !")
-                            refreshList.toggle()
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
                 }
             }
             .navigationTitle("Add Task")
             .toolbar{
                 ToolbarItem(placement: .topBarLeading) {
+                    
                     Button("Cancel") {
-                        showAddTaskView = false
+                        if taskItem.name.isEmpty == false || taskItem.description.isEmpty == false {
+                            showDiscardAlert = true
+                        }
+                        else {
+                            showAddTaskView = false
+                        }
                     }
                 }
                 
@@ -67,8 +65,26 @@ struct AddTaskView: View {
                         refreshList.toggle()
                         showAddTaskView = false
                     }
+                    .disabled(taskItem.name.isEmpty)
                 }
             }
+            .alert("Save task", isPresented: $showDiscardAlert, actions: {
+                Button(role: .cancel) {
+                    showAddTaskView = false
+                } label: {
+                    Text("Cancel")
+                }
+                Button {
+                    viewModel.addTask(taskItem)
+                    print("Add success !")
+                    refreshList.toggle()
+                    showAddTaskView = false
+                } label: {
+                    Text("Save")
+                }
+            }, message: {
+                Text("Would you like to save this task ?")
+            })
         }
     }
 }
