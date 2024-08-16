@@ -85,17 +85,9 @@ struct TaskDetailView: View {
 
 #Preview {
     TaskDetailView(
-        taskItem: .constant(
-            TaskItem(
-                id: 0,
-                name: "Workout",
-                description: "Workout for 10 minutes.",
-                isCompleted: false,
-                finishedDate: .now
-            )
-        ),
+        taskItem: .constant(TaskItem.createEmptyTask()),
         showTaskDetailView: .constant(true),
-        viewModel: TaskViewModel(),
+        viewModel: TaskViewModelFactory.createTaskViewModel(),
         refreshList: .constant(false)
     )
 }

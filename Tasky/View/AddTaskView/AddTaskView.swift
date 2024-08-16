@@ -13,13 +13,7 @@ struct AddTaskView: View {
     
     @Binding var showAddTaskView: Bool
     
-    @State private var taskItem = TaskItem(
-        id: 0,
-        name: "",
-        description: "",
-        isCompleted: false,
-        finishedDate: .now
-    )
+    @State private var taskItem = TaskItem.createEmptyTask()
     
     @Binding var refreshList: Bool
     
@@ -60,9 +54,9 @@ struct AddTaskView: View {
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Add") {
-                        viewModel.addTask(taskItem)
-                        print("Add success !")
-                        refreshList.toggle()
+                        if viewModel.addTask(taskItem) {
+                            refreshList.toggle()
+                        }
                         showAddTaskView = false
                     }
                     .disabled(taskItem.name.isEmpty)
@@ -75,9 +69,10 @@ struct AddTaskView: View {
                     Text("Cancel")
                 }
                 Button {
-                    viewModel.addTask(taskItem)
-                    print("Add success !")
-                    refreshList.toggle()
+                    if viewModel.addTask(taskItem) {
+                        refreshList.toggle()
+                    }
+                    
                     showAddTaskView = false
                 } label: {
                     Text("Save")
@@ -91,7 +86,7 @@ struct AddTaskView: View {
 
 #Preview {
     AddTaskView(
-        viewModel: TaskViewModel(),
+        viewModel: TaskViewModelFactory.createTaskViewModel(),
         showAddTaskView: .constant(true),
         refreshList: .constant(false)
     )

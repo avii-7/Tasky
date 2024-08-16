@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @StateObject private var viewModel = TaskViewModel()
+    @StateObject private var viewModel = TaskViewModelFactory.createTaskViewModel()
     
     private let filters = ["Active", "Completed"]
     
@@ -21,13 +21,7 @@ struct HomeView: View {
     
     @State private var refreshList = false
     
-    @State private var selectedTask = TaskItem(
-        id: 0,
-        name: "",
-        description: "",
-        isCompleted: false,
-        finishedDate: .now
-    )
+    @State private var selectedTask = TaskItem.createEmptyTask()
     
     var body: some View {
         
@@ -40,10 +34,10 @@ struct HomeView: View {
             }
             .pickerStyle(.segmented)
             .onChange(of: currentFilter) {
-                viewModel.showTasks(completed: currentFilter == "Completed")
+                viewModel.showTasks(isCompleted: currentFilter == "Completed")
             }
             
-            List(viewModel.tasks, id: \.id) { item in
+            List(viewModel.taskItems, id: \.id) { item in
                 VStack (alignment: .leading) {
                     Text(item.name).font(.title)
                     
@@ -58,10 +52,10 @@ struct HomeView: View {
                 }
             }
             .onAppear {
-                viewModel.showTasks(completed: currentFilter == "Completed")
+                viewModel.showTasks(isCompleted: currentFilter == "Completed")
             }
             .onChange(of: refreshList, {
-                viewModel.showTasks(completed: currentFilter == "Completed")
+                viewModel.showTasks(isCompleted: currentFilter == "Completed")
                 print("On change")
             })
             .listStyle(.plain)

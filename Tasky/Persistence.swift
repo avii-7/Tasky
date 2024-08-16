@@ -8,11 +8,14 @@
 import CoreData
 
 struct PersistenceController {
+    
     static let shared = PersistenceController()
-
-    let container: NSPersistentContainer
-
-    init(inMemory: Bool = false) {
+    
+    private let container: NSPersistentContainer
+    
+    let context: NSManagedObjectContext
+    
+    private init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "Tasky")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
@@ -23,5 +26,21 @@ struct PersistenceController {
             }
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
+        context = container.viewContext
+    }
+    
+    @discardableResult
+    func saveContext() -> Bool {
+        
+        guard context.hasChanges else { return false }
+        
+        do {
+            try context.save()
+            return true
+        }
+        catch {
+            debugPrint(error)
+            return false
+        }
     }
 }
