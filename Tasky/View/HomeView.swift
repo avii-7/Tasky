@@ -21,7 +21,7 @@ struct HomeView: View {
     
     @State private var refreshList = false
     
-    @State private var selectedTask = TaskItem.createEmptyTask()
+    @State private var selectedTask = TaskItem.empty()
     
     var body: some View {
         
@@ -80,6 +80,9 @@ struct HomeView: View {
             })
             .sheet(isPresented: $showAddTaskView) {
                 AddTaskView(viewModel: viewModel, showAddTaskView: $showAddTaskView, refreshList: $refreshList)
+            }
+            .alert(isPresented: $viewModel.showErrorAlert, error: viewModel.repositoryError) {
+                Button("OK", role: .cancel) { }
             }
         }
     }

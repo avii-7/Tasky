@@ -11,8 +11,12 @@ class TaskViewModel : ObservableObject {
     
     @Published var taskItems = [TaskItem]()
     
+    @Published var showErrorAlert = false
+    
+    var repositoryError: TaskRepositoryError?
+    
     private var taskRepository: TaskRepository
-
+    
     init(taskRepository: TaskRepository) {
         self.taskRepository = taskRepository
     }
@@ -28,19 +32,46 @@ class TaskViewModel : ObservableObject {
     }()
     
     func showTasks(isCompleted: Bool) {
-        taskItems = taskRepository.getAll(isCompleted: isCompleted)
+        do {
+            taskItems = try taskRepository.getAll(isCompleted: isCompleted)
+        }
+        catch {
+            repositoryError = error as? TaskRepositoryError
+            showErrorAlert = true
+        }
     }
     
     func addTask(_ task: TaskItem) -> Bool {
-        taskRepository.add(task: task)
+        do {
+            return try taskRepository.add(task: task)
+        }
+        catch {
+            repositoryError = error as? TaskRepositoryError
+            showErrorAlert = true
+            return false
+        }
     }
     
     func updateTask(_ task: TaskItem) -> Bool {
-        taskRepository.update(task: task)
+        do {
+            return try taskRepository.update(task: task)
+        }
+        catch {
+            repositoryError = error as? TaskRepositoryError
+            showErrorAlert = true
+            return false
+        }
     }
-
+    
     func deleteTask(_ task: TaskItem) -> Bool {
-        taskRepository.delete(using: task.id)
+        do {
+            return try taskRepository.delete(using: task.id)
+        }
+        catch {
+            repositoryError = error as? TaskRepositoryError
+            showErrorAlert = true
+            return false
+        }
     }
 }
 

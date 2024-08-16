@@ -1,5 +1,5 @@
 //
-//  Persistence.swift
+//  CoreDataPersistence.swift
 //  Tasky
 //
 //  Created by Arun on 06/08/24.
@@ -7,9 +7,9 @@
 
 import CoreData
 
-struct PersistenceController {
+struct CoreDataPersistence {
     
-    static let shared = PersistenceController()
+    static let shared = CoreDataPersistence()
     
     private let container: NSPersistentContainer
     
@@ -30,7 +30,7 @@ struct PersistenceController {
     }
     
     @discardableResult
-    func saveContext() -> Bool {
+    func saveContext() throws -> Bool {
         
         guard context.hasChanges else { return false }
         
@@ -39,8 +39,8 @@ struct PersistenceController {
             return true
         }
         catch {
-            debugPrint(error)
-            return false
+            context.rollback()
+            throw error
         }
     }
 }

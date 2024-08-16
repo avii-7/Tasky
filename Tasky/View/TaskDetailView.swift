@@ -79,13 +79,16 @@ struct TaskDetailView: View {
             message: {
                 Text("Would you like to delete the task ?")
             }
+            .alert(isPresented: $viewModel.showErrorAlert, error: viewModel.repositoryError) {
+                Button("OK", role: .cancel) { }
+            }
         }
     }
 }
 
 #Preview {
     TaskDetailView(
-        taskItem: .constant(TaskItem.createEmptyTask()),
+        taskItem: .constant(TaskItem.empty()),
         showTaskDetailView: .constant(true),
         viewModel: TaskViewModelFactory.createTaskViewModel(),
         refreshList: .constant(false)

@@ -13,7 +13,7 @@ struct AddTaskView: View {
     
     @Binding var showAddTaskView: Bool
     
-    @State private var taskItem = TaskItem.createEmptyTask()
+    @State private var taskItem = TaskItem.empty()
     
     @Binding var refreshList: Bool
     
@@ -80,6 +80,9 @@ struct AddTaskView: View {
             }, message: {
                 Text("Would you like to save this task ?")
             })
+            .alert(isPresented: $viewModel.showErrorAlert, error: viewModel.repositoryError) {
+                Button("OK", role: .cancel) { }
+            }
         }
     }
 }

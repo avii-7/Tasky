@@ -17,7 +17,7 @@ struct TaskItem {
 
 extension TaskItem {
     
-    static func createEmptyTask() -> TaskItem {
+    static func empty() -> TaskItem {
         return TaskItem(
             id: UUID(),
             name: "",

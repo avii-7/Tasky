@@ -9,11 +9,11 @@ import Foundation
 
 protocol TaskRepository {
     
-    func add(task: TaskItem) -> Bool
+    func add(task: TaskItem) throws -> Bool
     
-    func update(task: TaskItem) -> Bool
+    func update(task: TaskItem) throws -> Bool
     
-    func delete(using id: UUID) -> Bool
+    func delete(using id: UUID) throws -> Bool
     
-    func getAll(isCompleted: Bool) -> [TaskItem]
+    func getAll(isCompleted: Bool) throws -> [TaskItem]
 }
