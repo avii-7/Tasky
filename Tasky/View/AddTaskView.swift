@@ -56,8 +56,8 @@ struct AddTaskView: View {
                     Button("Add") {
                         if viewModel.addTask(taskItem) {
                             refreshList.toggle()
+                            showAddTaskView = false
                         }
-                        showAddTaskView = false
                     }
                     .disabled(taskItem.name.isEmpty)
                 }
@@ -71,9 +71,8 @@ struct AddTaskView: View {
                 Button {
                     if viewModel.addTask(taskItem) {
                         refreshList.toggle()
+                        showAddTaskView = false
                     }
-                    
-                    showAddTaskView = false
                 } label: {
                     Text("Save")
                 }

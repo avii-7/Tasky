@@ -59,10 +59,10 @@ struct TaskDetailView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Update") {
                         if viewModel.updateTask(taskItem) {
-                            print("Update success !")
                             refreshList.toggle()
+                            showTaskDetailView = false
                         }
-                        showTaskDetailView = false
+                        
                     }.disabled(taskItem.name.isEmpty)
                 }
             }
@@ -72,8 +72,8 @@ struct TaskDetailView: View {
                 Button("Yes", role: .destructive) {
                     if viewModel.deleteTask(taskItem) {
                         refreshList.toggle()
+                        showTaskDetailView = false
                     }
-                    showTaskDetailView = false
                 }
             }
             message: {

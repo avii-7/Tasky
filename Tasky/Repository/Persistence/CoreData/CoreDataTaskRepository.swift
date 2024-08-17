@@ -9,80 +9,115 @@ import Foundation
 
 final class CoreDataTaskRepository: TaskRepository {
     
-    private let persistentController = CoreDataPersistence.shared
+    private let persistence: CoreDataPersistence
     
-    func add(task: TaskItem) throws -> Bool {
+    init(persistence: CoreDataPersistence = CoreDataPersistence.shared) {
+        self.persistence = persistence
+    }
+    
+    func add(task: TaskItem) -> Result<Void, TaskRepositoryError> {
         do {
-            let taskEntity = TaskEntity(context: persistentController.context)
+            let taskEntity = TaskEntity(context: persistence.context)
             taskEntity.id = task.id
             taskEntity.name = task.name
             taskEntity.taskDescription = task.description
             taskEntity.isCompleted = task.isCompleted
             taskEntity.finishedDate = task.finishedDate
             
-            return try persistentController.saveContext()
+            try persistence.saveContext()
+            return .success(())
         }
         catch {
-            debugPrint("error on add = \(error.localizedDescription)")
-            throw TaskRepositoryError.add
+            return
+                .failure(TaskRepositoryError.localStorageError(cause: "error on add = \(error.localizedDescription)")
+            )
         }
     }
     
-    func update(task: TaskItem) throws -> Bool {
-        do {
-            guard let taskEntity = try getTask(by: task.id) else { return false }
-            taskEntity.name = task.name
-            taskEntity.taskDescription = task.description
-            taskEntity.finishedDate = task.finishedDate
-            taskEntity.isCompleted = task.isCompleted
-            return try persistentController.saveContext()
-        }
-        catch {
-            debugPrint("error on update = \(error.localizedDescription)")
-            throw TaskRepositoryError.update
-        }
-    }
-    
-    func delete(using id: UUID) throws -> Bool {
-        guard let taskEntity = try getTask(by: id) else { return false }
-        persistentController.context.delete(taskEntity)
+    func update(task: TaskItem) -> Result<Void, TaskRepositoryError> {
         
         do {
-            return try persistentController.saveContext()
+            let taskEntityResult = getTask(by: task.id)
+
+            switch taskEntityResult {
+            case .success(let taskEntity):
+                
+                guard let taskEntity else {
+                    return .failure(.localStorageError(cause: "Entity doesn't exist"))
+                }
+                
+                taskEntity.name = task.name
+                taskEntity.taskDescription = task.description
+                taskEntity.finishedDate = task.finishedDate
+                taskEntity.isCompleted = task.isCompleted
+                
+                try persistence.saveContext()
+                return .success(())
+                
+            case .failure(let failure):
+                return .failure(failure)
+            }
         }
         catch {
-            debugPrint("error on delete = \(error.localizedDescription)")
-            throw TaskRepositoryError.delete
+            return
+                .failure(.localStorageError(cause: "error on update = \(error.localizedDescription)"))
         }
     }
     
-    func getAll(isCompleted: Bool) throws -> [TaskItem] {
+    func delete(using id: UUID) -> Result<Void, TaskRepositoryError> {
+
+        do {
+            let taskEntityResult = getTask(by: id)
+
+            switch taskEntityResult {
+            case .success(let taskEntity):
+                
+                guard let taskEntity else {
+                    return .failure(.localStorageError(cause: "Entity doesn't exist"))
+                }
+                
+                persistence.context.delete(taskEntity)
+                
+                try persistence.saveContext()
+                return .success(())
+                
+            case .failure(let failure):
+                return .failure(failure)
+            }
+        }
+        catch {
+            return .failure(.localStorageError(cause: "error on delete = \(error.localizedDescription)"))
+        }
+    }
+    
+    func getAll(isCompleted: Bool) -> Result<[TaskItem], TaskRepositoryError> {
         
         let request = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "isCompleted == %@", NSNumber(value: isCompleted))
         
         do {
-            let result = try persistentController.context.fetch(request)
-            return result.map { $0.convertToDomain() }
+            let entities = try persistence.context.fetch(request)
+            let taskItems = entities.map { $0.convertToDomain() }
+            return .success(taskItems)
         }
         catch {
-            debugPrint("error on getAll = \(error.localizedDescription)")
-            throw TaskRepositoryError.get
+            return .failure(.localStorageError(cause: "error on getAll(isCompleted:) = \(error.localizedDescription)"))
         }
     }
     
-    private func getTask(by id: UUID) throws -> TaskEntity? {
+    private func getTask(by id: UUID) -> Result<TaskEntity?, TaskRepositoryError> {
+        
         let request = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
         request.fetchLimit = 1
         
         do {
-            let result = try persistentController.context.fetch(request).first
-            return result
+            let result = try persistence.context.fetch(request).first
+            return .success(result)
         }
         catch {
-            debugPrint("error on getTask(id:) = \(error.localizedDescription)")
-            throw TaskRepositoryError.get
+            return
+                .failure(TaskRepositoryError.localStorageError(cause: "error on getTask(id:) = \(error.localizedDescription)"))
         }
     }
 }

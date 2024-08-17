@@ -8,22 +8,15 @@
 import Foundation
 
 enum TaskRepositoryError {
-    case add, update, delete, get, failed
+    case localStorageError(cause: String)
 }
 
 extension TaskRepositoryError : LocalizedError {
+    
     var errorDescription: String? {
         switch self {
-        case .add:
-            "Failed to add an item."
-        case .update:
-            "Failed to update an item."
-        case .delete:
-            "Failed to delete an item from list."
-        case .get:
-            "Failed to get items."
-        case .failed:
-            "Failed"
+        case .localStorageError(let cause):
+            return cause
         }
     }
 }

@@ -19,12 +19,13 @@
 		86A99A672C61548600098FE0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A99A662C61548600098FE0 /* Preview Assets.xcassets */; };
 		86A99A692C61548600098FE0 /* CoreDataPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A99A682C61548600098FE0 /* CoreDataPersistence.swift */; };
 		86A99A6C2C61548600098FE0 /* Tasky.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 86A99A6A2C61548600098FE0 /* Tasky.xcdatamodeld */; };
-		86A99A762C61548600098FE0 /* TaskyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A99A752C61548600098FE0 /* TaskyTests.swift */; };
 		86A99A802C61548600098FE0 /* TaskyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A99A7F2C61548600098FE0 /* TaskyUITests.swift */; };
 		86A99A822C61548600098FE0 /* TaskyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A99A812C61548600098FE0 /* TaskyUITestsLaunchTests.swift */; };
 		86A99A902C615E0400098FE0 /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A99A8F2C615E0400098FE0 /* TaskItem.swift */; };
 		86A99A932C615EF100098FE0 /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A99A922C615EF100098FE0 /* TaskViewModel.swift */; };
 		86B40AA42C6FBB4900805101 /* TaskRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B40AA32C6FBB4900805101 /* TaskRepositoryError.swift */; };
+		86B40AA92C6FCFF700805101 /* MockTaskRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B40AA82C6FCFF700805101 /* MockTaskRepository.swift */; };
+		86B40AAC2C6FD94F00805101 /* TaskViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B40AAB2C6FD94F00805101 /* TaskViewModelTests.swift */; };
 		86D994732C6350EB001AE47C /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D994722C6350EB001AE47C /* Date+Extensions.swift */; };
 		86D994782C635E59001AE47C /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D994772C635E59001AE47C /* AddTaskView.swift */; };
 		86D9947E2C636DFC001AE47C /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D9947D2C636DFC001AE47C /* TaskDetailView.swift */; };
@@ -62,13 +63,14 @@
 		86A99A682C61548600098FE0 /* CoreDataPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataPersistence.swift; sourceTree = "<group>"; };
 		86A99A6B2C61548600098FE0 /* Tasky.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tasky.xcdatamodel; sourceTree = "<group>"; };
 		86A99A712C61548600098FE0 /* TaskyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		86A99A752C61548600098FE0 /* TaskyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskyTests.swift; sourceTree = "<group>"; };
 		86A99A7B2C61548600098FE0 /* TaskyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		86A99A7F2C61548600098FE0 /* TaskyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskyUITests.swift; sourceTree = "<group>"; };
 		86A99A812C61548600098FE0 /* TaskyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		86A99A8F2C615E0400098FE0 /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
 		86A99A922C615EF100098FE0 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
 		86B40AA32C6FBB4900805101 /* TaskRepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRepositoryError.swift; sourceTree = "<group>"; };
+		86B40AA82C6FCFF700805101 /* MockTaskRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTaskRepository.swift; sourceTree = "<group>"; };
+		86B40AAB2C6FD94F00805101 /* TaskViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModelTests.swift; sourceTree = "<group>"; };
 		86D994722C6350EB001AE47C /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		86D994772C635E59001AE47C /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
 		86D9947D2C636DFC001AE47C /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
@@ -129,6 +131,13 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		86A4BF742C708F6E00F90C38 /* Stubs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Stubs;
+			sourceTree = "<group>";
+		};
 		86A99A532C61548400098FE0 = {
 			isa = PBXGroup;
 			children = (
@@ -175,7 +184,9 @@
 		86A99A742C61548600098FE0 /* TaskyTests */ = {
 			isa = PBXGroup;
 			children = (
-				86A99A752C61548600098FE0 /* TaskyTests.swift */,
+				86A4BF742C708F6E00F90C38 /* Stubs */,
+				86B40AAA2C6FD94000805101 /* ViewModel */,
+				86B40AA72C6FCFD300805101 /* Mocks */,
 			);
 			path = TaskyTests;
 			sourceTree = "<group>";
@@ -231,6 +242,22 @@
 				86A99A8F2C615E0400098FE0 /* TaskItem.swift */,
 			);
 			path = Domain;
+			sourceTree = "<group>";
+		};
+		86B40AA72C6FCFD300805101 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				86B40AA82C6FCFF700805101 /* MockTaskRepository.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		86B40AAA2C6FD94000805101 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				86B40AAB2C6FD94F00805101 /* TaskViewModelTests.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		86D994702C6350C6001AE47C /* Extensions */ = {
@@ -394,7 +421,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86A99A762C61548600098FE0 /* TaskyTests.swift in Sources */,
+				86B40AAC2C6FD94F00805101 /* TaskViewModelTests.swift in Sources */,
+				86B40AA92C6FCFF700805101 /* MockTaskRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
