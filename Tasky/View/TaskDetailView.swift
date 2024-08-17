@@ -31,6 +31,8 @@ struct TaskDetailView: View {
                     
                     TextEditor(text: $taskItem.description)
                         .font(.body)
+                        .frame(height: 90)
+                        .lineLimit(3)
                                                 
                     Toggle("Mark complete", isOn: $taskItem.isCompleted)
                 }

@@ -27,6 +27,8 @@ struct AddTaskView: View {
                         .font(.title3)
                     TextEditor(text: $taskItem.description)
                         .font(.body)
+                        .frame(maxHeight: 100)
+                        .lineLimit(3)
                     
                 } header: {
                     Text("Task Details")

@@ -56,7 +56,6 @@ struct HomeView: View {
             }
             .onChange(of: refreshList, {
                 viewModel.showTasks(isCompleted: currentFilter == "Completed")
-                print("On change")
             })
             .listStyle(.plain)
             .navigationTitle("Home View")
