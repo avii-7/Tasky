@@ -10,7 +10,8 @@ import Foundation
 final class TaskViewModelFactory {
     
     static func createTaskViewModel() -> TaskViewModel {
-        let coreDataRepository = CoreDataTaskRepository()
+        let persistence = CoreDataPersistence()
+        let coreDataRepository = CoreDataTaskRepository(persistence: persistence)
         return TaskViewModel(taskRepository: coreDataRepository)
     }
 }

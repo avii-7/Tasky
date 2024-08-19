@@ -7,7 +7,7 @@
 
 import CoreData
 
-struct CoreDataPersistence {
+class CoreDataPersistence {
     
     static let shared = CoreDataPersistence()
     
@@ -15,8 +15,12 @@ struct CoreDataPersistence {
     
     let context: NSManagedObjectContext
     
-    private init(inMemory: Bool = false) {
+    init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "Tasky")
+        
+        let description = NSPersistentStoreDescription()
+        description.type = NSInMemoryStoreType
+        
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }

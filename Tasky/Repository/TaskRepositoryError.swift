@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TaskRepositoryError {
+enum TaskRepositoryError: Equatable {
     case localStorageError(cause: String)
 }
 

@@ -16,4 +16,6 @@ protocol TaskRepository {
     func delete(using id: UUID) -> Result<Void, TaskRepositoryError>
     
     func getAll(isCompleted: Bool) -> Result<[TaskItem], TaskRepositoryError>
+    
+    func getTask(by id: UUID) -> Result<TaskItem?, TaskRepositoryError>
 }

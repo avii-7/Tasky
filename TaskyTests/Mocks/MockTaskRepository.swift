@@ -53,4 +53,13 @@ class MockTaskRepository: TaskRepository {
         let taskItems = taskItems.filter { $0.isCompleted == isCompleted }
         return .success(taskItems)
     }
+    
+    func getTask(by id: UUID) -> Result<TaskItem?, Tasky.TaskRepositoryError> {
+        if let index = taskItems.firstIndex(where: { $0.id == id }) {
+            return .success(taskItems[index])
+        }
+        else {
+            return .failure(.localStorageError(cause: "Task item not found"))
+        }
+    }
 }

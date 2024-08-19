@@ -11,7 +11,7 @@ final class CoreDataTaskRepository: TaskRepository {
     
     private let persistence: CoreDataPersistence
     
-    init(persistence: CoreDataPersistence = CoreDataPersistence.shared) {
+    init(persistence: CoreDataPersistence) {
         self.persistence = persistence
     }
     
@@ -28,16 +28,13 @@ final class CoreDataTaskRepository: TaskRepository {
             return .success(())
         }
         catch {
-            return
-                .failure(TaskRepositoryError.localStorageError(cause: "error on add = \(error.localizedDescription)")
-            )
+            return .failure(.localStorageError(cause: "error on add = \(error.localizedDescription)"))
         }
     }
     
     func update(task: TaskItem) -> Result<Void, TaskRepositoryError> {
-        
         do {
-            let taskEntityResult = getTask(by: task.id)
+            let taskEntityResult = getTaskEnity(by: task.id)
 
             switch taskEntityResult {
             case .success(let taskEntity):
@@ -65,9 +62,8 @@ final class CoreDataTaskRepository: TaskRepository {
     }
     
     func delete(using id: UUID) -> Result<Void, TaskRepositoryError> {
-
         do {
-            let taskEntityResult = getTask(by: id)
+            let taskEntityResult = getTaskEnity(by: id)
 
             switch taskEntityResult {
             case .success(let taskEntity):
@@ -91,11 +87,9 @@ final class CoreDataTaskRepository: TaskRepository {
     }
     
     func getAll(isCompleted: Bool) -> Result<[TaskItem], TaskRepositoryError> {
-        
-        let request = TaskEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "isCompleted == %@", NSNumber(value: isCompleted))
-        
         do {
+            let request = TaskEntity.fetchRequest()
+            request.predicate = NSPredicate(format: "isCompleted == %@", NSNumber(value: isCompleted))
             let entities = try persistence.context.fetch(request)
             let taskItems = entities.map { $0.convertToDomain() }
             return .success(taskItems)
@@ -105,19 +99,28 @@ final class CoreDataTaskRepository: TaskRepository {
         }
     }
     
-    private func getTask(by id: UUID) -> Result<TaskEntity?, TaskRepositoryError> {
+    func getTask(by id: UUID) -> Result<TaskItem?, TaskRepositoryError> {
+        let result = getTaskEnity(by: id)
         
-        let request = TaskEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
-        request.fetchLimit = 1
-        
+        switch result {
+        case .success(let taskItem):
+            return .success(taskItem?.convertToDomain())
+        case .failure(let error):
+            return .failure(.localStorageError(cause: error.localizedDescription))
+        }
+    }
+    
+    private func getTaskEnity(by id: UUID) -> Result<TaskEntity?, TaskRepositoryError> {
         do {
+            let request = TaskEntity.fetchRequest()
+            request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+            request.fetchLimit = 1
+            
             let result = try persistence.context.fetch(request).first
             return .success(result)
         }
         catch {
-            return
-                .failure(TaskRepositoryError.localStorageError(cause: "error on getTask(id:) = \(error.localizedDescription)"))
+            return .failure(.localStorageError(cause: "error on getTask(id:) = \(error.localizedDescription)"))
         }
     }
 }
