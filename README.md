@@ -1,6 +1,6 @@
 # Tasky
 
-**Tasky** is a simple and intuitive task management application built using SwiftUI, designed to help users organize their daily tasks efficiently. The app leverages Core Data for persistent storage, ensuring that your tasks are saved and accessible across sessions. The project also adheres to SOLID principles, promoting clean, scalable, and maintainable code.
+**Tasky** is a simple and intuitive task management application built using **SwiftUI** ❤️, designed to help users organize their daily tasks efficiently. The app leverages Core Data for persistent storage, ensuring that your tasks are saved and accessible across sessions. The project also adheres to SOLID principles, promoting clean, scalable, and maintainable code.
 
 ## Features
 
