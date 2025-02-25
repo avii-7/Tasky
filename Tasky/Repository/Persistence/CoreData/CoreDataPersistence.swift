@@ -9,8 +9,6 @@ import CoreData
 
 class CoreDataPersistence {
     
-    static let shared = CoreDataPersistence()
-    
     private let container: NSPersistentContainer
     
     let context: NSManagedObjectContext
